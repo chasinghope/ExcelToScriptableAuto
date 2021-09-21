@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="root" style="height: 25px; align-items: center; width: 100%; flex-direction: row; flex-shrink: 1; margin-right: 0; flex-grow: 0; flex-wrap: nowrap;">
+        <ui:VisualElement name="excelPart" style="width: 40%; height: 100%; flex-direction: row; align-items: center;">
+            <ui:Toggle name="Toggle" value="false" style="width: 16px;" />
+            <ui:VisualElement name="ExcelIcon" style="height: 16px; justify-content: flex-start; align-items: flex-start; background-image: resource(&apos;excelIcon&apos;); width: 15px;" />
+            <ui:Label text="gameconfig.xlsx" display-tooltip-when-elided="true" name="ExcelText" style="width: 109px; font-size: 12px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="scriptPart" style="height: 100%; width: 30%; flex-direction: row; align-items: center;">
+            <ui:Label text="缺失" display-tooltip-when-elided="true" name="lackScript" style="color: rgb(255, 88, 88); display: flex;" />
+            <ui:VisualElement name="scriptIcon" style="height: 16px; width: 15px; background-image: resource(&apos;scirptIcon&apos;); justify-content: space-between; align-items: center; flex-direction: row;" />
+            <ui:Label text="gameconfig.cs" display-tooltip-when-elided="true" name="ScriptText" />
+        </ui:VisualElement>
+        <ui:VisualElement name="scriptablePart" style="height: 100%; width: 30%; flex-direction: row; align-items: center;">
+            <ui:Label text="缺失" display-tooltip-when-elided="true" name="lackScriptable" style="font-size: 12%; color: rgb(255, 88, 88); display: flex; visibility: visible;" />
+            <ui:VisualElement name="scriptableIcon" style="width: 15px; height: 16px; background-image: resource(&apos;scirptableIcon&apos;);" />
+            <ui:Label text="gameconfig.asset" display-tooltip-when-elided="true" name="ScriptableText" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

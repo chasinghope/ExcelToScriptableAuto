@@ -1,0 +1,43 @@
+{
+  "int": {
+    "Type": "int",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic int {1};",
+    "ConstructorDetail": "\t\t{0} = int.Parse(parameter[{1}]);"
+  },
+  "float": {
+    "Type": "float",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic float {1};",
+    "ConstructorDetail": "\t\t{0} = float.Parse(parameter[{1}]);"
+  },
+  "double": {
+    "Type": "double",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic double {1};",
+    "ConstructorDetail": "\t\t{0} = double.Parse(parameter[{1}]);"
+  },
+  "string": {
+    "Type": "string",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic string {1};",
+    "ConstructorDetail": "\t\t{0} = parameter[{1}];"
+  },
+  "int[]": {
+    "Type": "int[]",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic int[] {1};",
+    "ConstructorDetail": "\n\t\tstring[] temp{1} = parameter[{1}].Split('|');\n\t\t{0} = new int[temp{1}.Length];\n\t\tfor (int i = 0; i < temp{1}.Length; i++)  {0}[i] = int.Parse(temp{1}[i]);"
+  },
+  "float[]": {
+    "Type": "float[]",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic float[] {1};",
+    "ConstructorDetail": "\n\t\tstring[] temp{1} = parameter[{1}].Split('|');\n\t\t{0} = new float[temp{1}.Length];\n\t\tfor (int i = 0; i < temp{1}.Length; i++)  {0}[i] = float.Parse(temp{1}[i]);"
+  },
+  "double[]": {
+    "Type": "double[]",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic double[] {1};",
+    "ConstructorDetail": "\n\t\tstring[] temp{1} = parameter[{1}].Split('|');\n\t\t{0} = new double[temp{1}.Length];\n\t\tfor (int i = 0; i < temp{1}.Length; i++)  {0}[i] = double.Parse(temp{1}[i]);"
+  },
+  "string[]": {
+    "Type": "string[]",
+    "FiledDetail": "\n\t/// <summary>\n\t/// {0}\n\t/// </summary>\n\tpublic string[] {1};",
+    "ConstructorDetail": "\n\t\t{0} = parameter[{1}].Split('|');"
+  }
+
+}

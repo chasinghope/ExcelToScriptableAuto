@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b1d2dabc614e24e9f3f1beccd8ccb6, type: 3}
+  m_Name: GameConfigSO
+  m_EditorClassIdentifier: 
+  Config: {fileID: 11400000, guid: 3ff723b680dae7f4cbb10f220a5f54fc, type: 2}
+  Item: {fileID: 11400000, guid: 88e54904a7721f042bd4e7f3b8e13d26, type: 2}
+  PlayerInfo: {fileID: 11400000, guid: 3b7cb331d84357041b7e7b9f93c9bc82, type: 2}
