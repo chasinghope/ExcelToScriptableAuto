@@ -27,6 +27,10 @@ Automatically convert excel into scriptableobject. It's convenient for you to us
 
 ![Snipaste_2021-09-21_17-43-06](READMERes/Snipaste_2021-09-21_17-43-06.png)
 
+
+
+![demo](READMERes/demo.gif)
+
 Tips:
 
 You Can Set path In **ExcelToolConfig.cs**
