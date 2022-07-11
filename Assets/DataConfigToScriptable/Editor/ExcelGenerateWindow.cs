@@ -17,6 +17,7 @@ public class ExcelGenerateWindow : EditorWindow
     {
         ExcelGenerateWindow wnd = GetWindow<ExcelGenerateWindow>();
         wnd.titleContent = new GUIContent("Excel表格管理工具");
+        wnd.minSize = new Vector2(800f, 500f);
     }
 
     public void CreateGUI()
