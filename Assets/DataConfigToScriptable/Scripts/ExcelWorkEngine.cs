@@ -11,17 +11,23 @@ using UnityEngine;
 
 public class ExcelWorkEngine
 {
+    private ExcelTypeDictModel excelTypeConfig;
+    private StringBuilder gameConfigCode;
+    private ScriptableObject gameConfigAsset;
 
-    static ExcelTypeDictModel excelTypeConfig = null;
-    static StringBuilder gameConfigCode = null;
-    static ScriptableObject gameConfigAsset = null;
-
-    public static void Work_Init()
+    public ExcelWorkEngine()
     {
-        excelTypeConfig = ExcelTypeDictModel.LoadConfig();
+
     }
 
-    public static void Work_GenerateCS(string excelFilePath)
+    public void Work_Init()
+    {
+        gameConfigCode = null;
+        gameConfigAsset = null;
+        excelTypeConfig = new ExcelTypeDictModel();
+    }
+
+    public void Work_GenerateCS(string excelFilePath)
     {
         DataSet ds = null;
         using (var fs = new FileStream(excelFilePath, FileMode.Open, FileAccess.Read))
@@ -50,7 +56,7 @@ public class ExcelWorkEngine
         CreateGenerateDotCs($"{ExcelToolConfig.ScriptPath}/{table.TableName}.cs", CodeGenerate(table.TableName, codeFormatter).ToString());
     }
 
-    public static ScriptableObject Work_GenerateScriptable(string excelFilePath)
+    public ScriptableObject Work_GenerateScriptable(string excelFilePath)
     {
         var assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetName());
         DataSet ds = null;
@@ -66,7 +72,6 @@ public class ExcelWorkEngine
         var table = ds.Tables[0];
 
         var obj = ScriptableObject.CreateInstance(assembly.GetType(table.TableName));
-        //Debug.Log(obj);
         var field = obj.GetType().GetField("Elements");
         object elements = Activator.CreateInstance(field.FieldType);
         MethodInfo addMethod = elements.GetType().GetMethod("Add", BindingFlags.Instance | BindingFlags.Public);
@@ -92,7 +97,7 @@ public class ExcelWorkEngine
         return obj;
     }
 
-    public static void Work_GenerateGameConfig_Script_Step_Start()
+    public void Work_GenerateGameConfig_Script_Step_Start()
     {
         gameConfigCode = new StringBuilder();
         gameConfigCode.AppendLine($"//CODE GENERATE: {DateTime.Now.ToString()}")
@@ -104,51 +109,49 @@ public class ExcelWorkEngine
                       .AppendLine("{");
     }
 
-    public static void Work_GenerateGameConfig_Script_Step_Continue(string fileName)
+    public void Work_GenerateGameConfig_Script_Step_Continue(string fileName)
     {
         gameConfigCode.AppendLine($"    public {fileName} {fileName};");
     }
 
-    public static void Work_GenerateGameConfig_Script_Step_End()
+    public void Work_GenerateGameConfig_Script_Step_End()
     {
         gameConfigCode.AppendLine("}");
         CreateGenerateDotCs($"{ExcelToolConfig.ScriptPath}/GameConfigSO.cs", gameConfigCode.ToString());
         gameConfigCode = null;
     }
 
-    public static void Work_GenerateGameConfig_Asset_Step_Start()
+    public void Work_GenerateGameConfig_Asset_Step_Start()
     {
         var assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetName());
         gameConfigAsset = ScriptableObject.CreateInstance(assembly.GetType("GameConfigSO"));
     }
 
-    public static void Work_GenerateGameConfig_Asset_Step_Continue(string fieldName, ScriptableObject child)
+    public void Work_GenerateGameConfig_Asset_Step_Continue(string fieldName, ScriptableObject child)
     {
         FieldInfo field = gameConfigAsset.GetType().GetField(fieldName);
         field.SetValue(gameConfigAsset, child);
     }
 
-    public static void Work_GenerateGameConfig_Asset_Step_End()
+    public void Work_GenerateGameConfig_Asset_Step_End()
     {
         AssetDatabase.CreateAsset(gameConfigAsset, "Assets/" + ExcelToolConfig.SOPath + "GameConfigSO.asset");
         gameConfigAsset = null;
     }
 
 
-    private static void CreateGenerateDotCs(string path, string code)
+    private void CreateGenerateDotCs(string path, string code)
     {
         File.WriteAllText(Path.Combine(Application.dataPath, path), code);
     }
 
-    private static StringBuilder CodeGenerate(string className, List<GenFormat> genFormatter)
+    private StringBuilder CodeGenerate(string className, List<GenFormat> genFormatter)
     {
         StringBuilder code = new StringBuilder();
         code.AppendLine($"//CODE GENERATE: {DateTime.Now.ToString()}")
             .AppendLine("using UnityEngine;")
-            //.AppendLine("using NaughtyAttributes;")
             .AppendLine("using System.Collections.Generic;")
             .AppendLine()
-            //.AppendLine($"[CreateAssetMenu(menuName = {"Excelable/PlayerInfo"})]")
             .AppendLine($"public class {className} : ScriptableObject")
             .AppendLine("{")
             .AppendLine($"   public List<{className}_Ele> Elements;")
@@ -162,7 +165,8 @@ public class ExcelWorkEngine
         //Add Field
         foreach (var item in genFormatter)
         {
-            code.AppendLine(item.Print_Field(excelTypeConfig));
+            if(item.NotNeedFormat() == false)
+                code.AppendLine(item.Print_Field(excelTypeConfig));
         }
 
         //Add Constructor
@@ -171,7 +175,8 @@ public class ExcelWorkEngine
 
         for (int i = 0; i < genFormatter.Count; i++)
         {
-            code.AppendLine(genFormatter[i].Print_Constructor(excelTypeConfig, i));
+            if (genFormatter[i].NotNeedFormat() == false)
+                code.AppendLine(genFormatter[i].Print_Constructor(excelTypeConfig, i));
         }
         code.AppendLine("\t}");
         code.AppendLine("}");
@@ -180,7 +185,7 @@ public class ExcelWorkEngine
     }
 
 
-    public static void Clear(string path)
+    public void Clear(string path)
     {
         string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, path));
         for (int i = 0; i < files.Length; i++)
@@ -199,21 +204,17 @@ public class GenFormat
 
     public string Print_Field(ExcelTypeDictModel model)
     {
-        //if (!model.Dict.ContainsKey(type))
-        //{
-        //    Debug.Log(type);
-        //}
         return string.Format(model.Dict[type].FiledDetail, describe, filedName);
     }
 
     public string Print_Constructor(ExcelTypeDictModel model, int index)
     {
-        //if (!model.Dict.ContainsKey(type))
-        //{
-        //    Debug.Log(type);
-        //}
-        //Debug.Log(model.Dict[type].ConstructorDetail);
         return string.Format(model.Dict[type].ConstructorDetail, filedName, index);
+    }
+
+    public bool NotNeedFormat()
+    {
+        return string.IsNullOrEmpty(type) || string.IsNullOrEmpty(filedName) || string.IsNullOrEmpty(filedName);
     }
 }
 
@@ -255,5 +256,18 @@ public class ExcelWorkEngineTools
         int nA = Get0XValue(rAStr[0]) * 16 + Get0XValue(rAStr[1]);
 
         return ToColor(nR, nG, nB, nA);
+    }
+
+    public static int Get0XValue(char rChar)
+    {
+        if (rChar >= '0' && rChar <= '9')
+        {
+            return rChar - '0';
+        }
+        else if (rChar >= 'A' && rChar <= 'F')
+        {
+            return rChar - 'A' + 10;
+        }
+        return 0;
     }
 }

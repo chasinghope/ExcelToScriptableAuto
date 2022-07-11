@@ -9,12 +9,11 @@ public class ExcelTypeDictModel
 {
 	public Dictionary<string, ExcelTypeModel> Dict;
 
-	public static ExcelTypeDictModel LoadConfig()
+
+    public ExcelTypeDictModel()
     {
 		TextAsset textAsset = Resources.Load<TextAsset>("ExcelTypeTemplate");
-		ExcelTypeDictModel model = new ExcelTypeDictModel();
-		model.Dict = JsonMapper.ToObject<Dictionary<string, ExcelTypeModel>>(textAsset.text);
-		return model;
+		Dict = JsonMapper.ToObject<Dictionary<string, ExcelTypeModel>>(textAsset.text);
 	}
 }
 

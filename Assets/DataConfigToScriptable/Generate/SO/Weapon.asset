@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef4b8ec5ccf69484aa1ad52092c000ec, type: 3}
-  m_Name: GameConfigSO
+  m_Script: {fileID: 11500000, guid: c22056433e99eff438a396be2f3d95c9, type: 3}
+  m_Name: Weapon
   m_EditorClassIdentifier: 
-  Weapon: {fileID: 11400000, guid: c114ab1a9cafcc744ae433a3a4a7c88b, type: 2}
+  Elements:
+  - ID: 1
+    Name: bob
+  - ID: 2
+    Name: andy
+  - ID: 3
+    Name: hery

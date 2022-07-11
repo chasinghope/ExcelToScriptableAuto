@@ -6,16 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class ExcelGenerateObj : EditorWindow
+public class ExcelGenerateWindow : EditorWindow
 {
 
     private bool IsSelectedAll;
+    private ExcelWorkEngine mExcelWorkEngine;
 
     [MenuItem("GameConfig/ExcelGenerateObj")]
     public static void ShowExample()
     {
-        ExcelGenerateObj wnd = GetWindow<ExcelGenerateObj>();
-        wnd.titleContent = new GUIContent("GameConfigGenerate");
+        ExcelGenerateWindow wnd = GetWindow<ExcelGenerateWindow>();
+        wnd.titleContent = new GUIContent("Excel数据表管理");
     }
 
     public void CreateGUI()
@@ -51,7 +52,8 @@ public class ExcelGenerateObj : EditorWindow
 
         #region ExcelWorkEngine启动
 
-        ExcelWorkEngine.Work_Init();
+        mExcelWorkEngine = new ExcelWorkEngine();
+        mExcelWorkEngine.Work_Init();
 
 
 
@@ -88,9 +90,9 @@ public class ExcelGenerateObj : EditorWindow
 
 
         ToolbarMenu toolbarMenu = root.Q<ToolbarMenu>("ToolbarMenu");
-        toolbarMenu.menu.AppendAction("ClearAll", (a)=> { ExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); ExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); }  );
-        toolbarMenu.menu.AppendAction("Clear Script", (a) => { ExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); listView.Refresh(); AssetDatabase.Refresh(); });
-        toolbarMenu.menu.AppendAction("Clear SO", (a) => { ExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); });
+        toolbarMenu.menu.AppendAction("ClearAll", (a)=> { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); }  );
+        toolbarMenu.menu.AppendAction("Clear Script", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); listView.Refresh(); AssetDatabase.Refresh(); });
+        toolbarMenu.menu.AppendAction("Clear SO", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); });
         
         Label PrintOut = root.Q<Label>("PrintOut");
 
@@ -127,15 +129,15 @@ public class ExcelGenerateObj : EditorWindow
                 }
             }
 
-            ExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Start();
+            mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Start();
             foreach (var item in files)
             {
                 //Debug.Log($"选中的excel： {item}  --> 生成C#脚本");
                 PrintOut.text = $"选中的excel： {item}  --> 生成C#脚本";
-                ExcelWorkEngine.Work_GenerateCS(item);
-                ExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Continue(Path.GetFileName(item.Split('.')[0]));
+                mExcelWorkEngine.Work_GenerateCS(item);
+                mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Continue(Path.GetFileName(item.Split('.')[0]));
             }
-            ExcelWorkEngine.Work_GenerateGameConfig_Script_Step_End();
+            mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_End();
             listView.Refresh();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -155,15 +157,15 @@ public class ExcelGenerateObj : EditorWindow
                 }
             }
 
-            ExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Start();
+            mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Start();
             foreach (var item in files)
             {
                 //Debug.Log($"选中的excel： {item}  --> 生成scriptable资源");
                 PrintOut.text = $"选中的excel： {item}  --> 生成scriptable资源";
-                var obj = ExcelWorkEngine.Work_GenerateScriptable(item);
-                ExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Continue(Path.GetFileName(item.Split('.')[0]), obj);
+                var obj = mExcelWorkEngine.Work_GenerateScriptable(item);
+                mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Continue(Path.GetFileName(item.Split('.')[0]), obj);
             }
-            ExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_End();
+            mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_End();
             listView.Refresh();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
