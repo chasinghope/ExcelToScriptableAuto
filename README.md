@@ -1,5 +1,5 @@
 # ExcelToScriptableAuto
-Unity support. ExcelToScriptableAuto. Need unity version 2020+
+Unity support. ExcelToScriptableAuto. Need unity version 2021.3.5f1c1+
 
 # Author
 

@@ -16,13 +16,13 @@ public class ExcelGenerateWindow : EditorWindow
     public static void ShowExample()
     {
         ExcelGenerateWindow wnd = GetWindow<ExcelGenerateWindow>();
-        wnd.titleContent = new GUIContent("Excel数据表管理");
+        wnd.titleContent = new GUIContent("Excel琛ㄦ牸绠＄悊宸ュ叿");
     }
 
     public void CreateGUI()
     {
 
-        #region UIToolkit资源加载
+        #region UIToolkit asset Load
 
         VisualElement root = rootVisualElement;
 
@@ -35,8 +35,8 @@ public class ExcelGenerateWindow : EditorWindow
 
         #endregion
 
-        #region 数据获取
-        //数据获取
+        #region Excel LOAD
+        //Load Files
         string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, ExcelToolConfig.ExcelPath));
 
         //Filters
@@ -50,7 +50,7 @@ public class ExcelGenerateWindow : EditorWindow
         }
         #endregion
 
-        #region ExcelWorkEngine启动
+        #region ExcelWorkEngine Init
 
         mExcelWorkEngine = new ExcelWorkEngine();
         mExcelWorkEngine.Work_Init();
@@ -59,7 +59,7 @@ public class ExcelGenerateWindow : EditorWindow
 
         #endregion
 
-        #region UI事件绑定
+        #region UI Binding
         // The "makeItem" function will be called as needed
         // when the ListView needs more items to render
         Func<VisualElement> makeItem = () => new ExcelLabel();
@@ -70,15 +70,13 @@ public class ExcelGenerateWindow : EditorWindow
         // the element with the matching data item (specified as an index in the list)
         Action<VisualElement, int> bindItem = (e, i) => (e as ExcelLabel).Model = items[i];
 
-        //var listView = new ListView(items, itemHeight, makeItem, bindItem);
         ListView listView = root.Q<ListView>("ListView");
         listView.itemsSource = items;
-        listView.itemHeight = 25;
         listView.makeItem = makeItem;
         listView.bindItem = bindItem;
 
         listView.selectionType = SelectionType.Multiple;
-        listView.style.flexGrow = 1.0f;
+        //listView.style.flexGrow = 1.0f;
         listView.onSelectionChange += (list) =>
         {
             foreach (var item in list)
@@ -90,10 +88,10 @@ public class ExcelGenerateWindow : EditorWindow
 
 
         ToolbarMenu toolbarMenu = root.Q<ToolbarMenu>("ToolbarMenu");
-        toolbarMenu.menu.AppendAction("ClearAll", (a)=> { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); }  );
-        toolbarMenu.menu.AppendAction("Clear Script", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); listView.Refresh(); AssetDatabase.Refresh(); });
-        toolbarMenu.menu.AppendAction("Clear SO", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Refresh(); AssetDatabase.Refresh(); });
-        
+        toolbarMenu.menu.AppendAction("ClearAll", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Rebuild(); AssetDatabase.Refresh(); });
+        toolbarMenu.menu.AppendAction("Clear Script", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.ScriptPath); listView.Rebuild(); AssetDatabase.Refresh(); });
+        toolbarMenu.menu.AppendAction("Clear SO", (a) => { mExcelWorkEngine.Clear(ExcelToolConfig.SOPath); listView.Rebuild(); AssetDatabase.Refresh(); });
+
         Label PrintOut = root.Q<Label>("PrintOut");
 
 
@@ -106,13 +104,13 @@ public class ExcelGenerateWindow : EditorWindow
                 var model = item as ExcelLabel.ExcelLabelModel;
                 model.IsSelect = this.IsSelectedAll;
             }
-            listView.Refresh();
+            listView.Rebuild();
         };
 
         Button refreshBtn = root.Q<Button>("RefreshBtn");
         refreshBtn.clicked += () =>
         {
-            listView.Refresh();
+            listView.Rebuild();
         };
 
 
@@ -132,13 +130,13 @@ public class ExcelGenerateWindow : EditorWindow
             mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Start();
             foreach (var item in files)
             {
-                //Debug.Log($"选中的excel： {item}  --> 生成C#脚本");
-                PrintOut.text = $"选中的excel： {item}  --> 生成C#脚本";
+                //Debug.Log($"选锟叫碉拷excel锟斤拷 {item}  --> 锟斤拷锟斤拷C#锟脚憋拷");
+                PrintOut.text = $"选锟叫碉拷excel锟斤拷 {item}  --> 锟斤拷锟斤拷C#锟脚憋拷";
                 mExcelWorkEngine.Work_GenerateCS(item);
                 mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_Continue(Path.GetFileName(item.Split('.')[0]));
             }
             mExcelWorkEngine.Work_GenerateGameConfig_Script_Step_End();
-            listView.Refresh();
+            listView.Rebuild();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             PrintOut.text = "Done!";
@@ -160,13 +158,12 @@ public class ExcelGenerateWindow : EditorWindow
             mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Start();
             foreach (var item in files)
             {
-                //Debug.Log($"选中的excel： {item}  --> 生成scriptable资源");
-                PrintOut.text = $"选中的excel： {item}  --> 生成scriptable资源";
+                PrintOut.text = $"excel {item}  --> scriptableObject";
                 var obj = mExcelWorkEngine.Work_GenerateScriptable(item);
                 mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_Continue(Path.GetFileName(item.Split('.')[0]), obj);
             }
             mExcelWorkEngine.Work_GenerateGameConfig_Asset_Step_End();
-            listView.Refresh();
+            listView.Rebuild();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             PrintOut.text = "Done!";

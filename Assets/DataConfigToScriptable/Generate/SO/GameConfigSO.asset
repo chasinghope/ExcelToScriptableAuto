@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b8ec5ccf69484aa1ad52092c000ec, type: 3}
   m_Name: GameConfigSO
   m_EditorClassIdentifier: 
-  Weapon: {fileID: 11400000, guid: c114ab1a9cafcc744ae433a3a4a7c88b, type: 2}
+  Config: {fileID: 0}
+  Item: {fileID: 0}
+  PlayerInfo: {fileID: 0}
+  Weapon: {fileID: 0}
