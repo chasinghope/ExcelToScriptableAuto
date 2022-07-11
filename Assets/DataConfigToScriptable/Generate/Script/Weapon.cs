@@ -1,14 +1,14 @@
-//CODE GENERATE: 2022/7/11 18:29:21
+//CODE GENERATE: 2022/7/11 21:20:49
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Weapon : ScriptableObject
+public partial class Weapon : ScriptableObject
 {
    public List<Weapon_Ele> Elements;
 }
 
 [System.Serializable]
-public class Weapon_Ele
+public partial class Weapon_Ele
 {
 
 	/// <summary>

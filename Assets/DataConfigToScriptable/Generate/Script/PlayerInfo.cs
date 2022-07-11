@@ -1,14 +1,14 @@
-//CODE GENERATE: 2022/7/11 18:29:21
+//CODE GENERATE: 2022/7/11 21:20:49
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerInfo : ScriptableObject
+public partial class PlayerInfo : ScriptableObject
 {
    public List<PlayerInfo_Ele> Elements;
 }
 
 [System.Serializable]
-public class PlayerInfo_Ele
+public partial class PlayerInfo_Ele
 {
 
 	/// <summary>

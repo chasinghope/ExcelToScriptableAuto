@@ -1,14 +1,14 @@
-//CODE GENERATE: 2022/7/11 18:29:21
+//CODE GENERATE: 2022/7/11 21:20:49
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Config : ScriptableObject
+public partial class Config : ScriptableObject
 {
    public List<Config_Ele> Elements;
 }
 
 [System.Serializable]
-public class Config_Ele
+public partial class Config_Ele
 {
 
 	/// <summary>

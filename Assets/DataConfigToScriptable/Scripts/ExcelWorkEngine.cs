@@ -103,7 +103,7 @@ public class ExcelWorkEngine
                       .AppendLine("using System.Collections.Generic;")
                       .AppendLine("using System.Collections;")
                       .AppendLine()
-                      .AppendLine("public class GameConfigSO : ScriptableObject")
+                      .AppendLine("public partial class GameConfigSO : ScriptableObject")
                       .AppendLine("{");
     }
 
@@ -149,14 +149,14 @@ public class ExcelWorkEngine
             .AppendLine("using UnityEngine;")
             .AppendLine("using System.Collections.Generic;")
             .AppendLine()
-            .AppendLine($"public class {className} : ScriptableObject")
+            .AppendLine($"public partial class {className} : ScriptableObject")
             .AppendLine("{")
             .AppendLine($"   public List<{className}_Ele> Elements;")
             .AppendLine("}");
 
         code.AppendLine()
             .AppendLine("[System.Serializable]")
-            .AppendLine($"public class {className}_Ele")
+            .AppendLine($"public partial class {className}_Ele")
             .AppendLine("{");
 
         //Add Field
